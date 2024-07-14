@@ -107,8 +107,8 @@ def main():
     # Get start and end indices of the current page
     start_index = (page_number - 1) * items_per_page
     end_index = start_index + items_per_page
-    data_lora = load_data(xai=False, filename='outputs/output_hg_lora.txt')
-    data = load_data(xai=False, filename='outputs/output_hg.txt')
+    data_lora = load_data(xai=False, filename='output_hg_lora.txt')
+    data = load_data(xai=False, filename='output_hg.txt')
     processed_data_lora = process_data(data_lora)
     processed_data = process_data(data)
     page_items_lora = processed_data_lora
