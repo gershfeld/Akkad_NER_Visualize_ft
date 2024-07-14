@@ -61,6 +61,52 @@ def load_data(xai=False, filename='outputs/output_hg_lora.txt'):
     return data
 
 
+def load_data_two_files(filename1='outputs/output_hg_lora.txt', filename2='outputs/output_hg_lora'):
+    data1 = []
+    data2 = []
+    with open(filename1, 'r', encoding='utf-8') as file1, open(filename2, 'r', encoding='utf-8') as file2:
+        while True:
+            # Read the original sentence
+            sentence1 = file1.readline().strip()
+            sentence2 = file2.readline().strip()
+            if (not sentence1) or (not sentence2):  # End of file check
+                break
+
+            # Initialize a variable to collect the LLM output
+            llm_output1 = ''
+            llm_output2 = ''
+
+            # Read until you encounter a pipe '|'
+            while True:
+                line1 = file1.readline().strip()
+                if '|' in line1:  # Check if the line contains a pipe
+                    llm_output1 += line1[:line1.index('|')]  # Add only up to the pipe
+                    break
+                llm_output1 += line1
+
+            while True:
+                line2 = file2.readline().strip()
+                if '|' in line2:
+                    llm_output2 += line2[:line2.index('|')]
+                    break
+                llm_output2 += line2
+
+            # Extract JSON from the LLM output using regex
+            json_match1 = re.search(r'\{.*\}', llm_output1)
+            json_match2 = re.search(r'\{.*\}', llm_output2)
+            if json_match1 or json_match2:
+                json_string1 = json_match1.group()
+                json_string2 = json_match2.group()
+                try:
+                    entities1 = json.loads(json_string1)
+                    entities2 = json.loads(json_string2)
+                    data1.append((sentence1, entities1))
+                    data2.append((sentence2, entities2))
+                except json.JSONDecodeError:
+                    print(f"Error decoding JSON for sentence: {sentence1} or {sentence2}")
+
+    return data1, data2
+
 def highlight_text(sentence, entities, lang):
     # Sort entities by start index to ensure correct insertion order
     start_key, end_key = (f'start_{lang}', f'end_{lang}') if lang else ('start', 'end')
