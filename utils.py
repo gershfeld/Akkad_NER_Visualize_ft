@@ -61,7 +61,7 @@ def load_data(xai=False, filename='outputs/output_hg_lora.txt'):
     return data
 
 
-def load_data_two_files(filename1='outputs/output_hg_lora.txt', filename2='outputs/output_hg_lora'):
+def load_data_two_files(filename1='output_hg_lora.txt', filename2='output_hg_lora'):
     data1 = []
     data2 = []
     with open(filename1, 'r', encoding='utf-8') as file1, open(filename2, 'r', encoding='utf-8') as file2:
