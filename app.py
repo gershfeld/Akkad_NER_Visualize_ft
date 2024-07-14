@@ -6,7 +6,7 @@ import json
 from rapidfuzz import fuzz
 
 from utils import load_data, preprocess_text, highlight_text, convert_char_to_token_indices, create_custom_doc, \
-    render_entities, get_color_for_type, normalize_entity_type
+    render_entities, get_color_for_type, normalize_entity_type, load_data_two_files
 
 
 def process_data(data):
@@ -107,8 +107,9 @@ def main():
     # Get start and end indices of the current page
     start_index = (page_number - 1) * items_per_page
     end_index = start_index + items_per_page
-    data_lora = load_data(xai=False, filename='output_hg_lora.txt')
-    data = load_data(xai=False, filename='output_hg.txt')
+    data_lora, data = load_data_two_files(filename1='outputs/output_hg_lora.txt', filename2='outputs/output_hg.txt')
+    # data_lora = load_data(xai=False, filename='outputs/output_hg_lora.txt')
+    # data = load_data(xai=False, filename='outputs/output_hg.txt')
     processed_data_lora = process_data(data_lora)
     processed_data = process_data(data)
     page_items_lora = processed_data_lora
